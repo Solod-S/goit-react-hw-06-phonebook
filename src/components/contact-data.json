@@ -1,0 +1,6 @@
+[
+  { "id": "id-1", "name": "Mark Zuckerberg", "number": "777-77-77" },
+  { "id": "id-2", "name": "Bill Gates", "number": "888-99-99" },
+  { "id": "id-3", "name": "Elon Musk", "number": "666-66-66" },
+  { "id": "id-4", "name": "Boris Johnson", "number": "222-22-22" }
+]
