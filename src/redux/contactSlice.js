@@ -6,7 +6,6 @@ export const myContactSlice = createSlice({
   initialState: contactdata,
   reducers: {
     addContact(state, action) {
-      console.log(`slice`, state);
       state.push({
         id: shortid.generate(),
         name: action.payload.name,

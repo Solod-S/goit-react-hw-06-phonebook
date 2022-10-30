@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { notifictation } from 'constants/notification';
 import 'react-toastify/dist/ReactToastify.css';
-import contactdata from './contact-data.json';
 import {
   AppHeader,
   MainAppHeader,
@@ -13,7 +11,6 @@ import {
 import ContactForm from './ContactForm/ContactForm';
 import ContactList from './ContactList/ContactList';
 import Filter from './Filter/Filter';
-import shortid from 'shortid';
 import image from '../img/left.png';
 import image2 from '../img/right.png';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,19 +19,8 @@ import { filter } from 'redux/filterSlice';
 
 function App() {
   const dipatch = useDispatch();
-  const storeContact = useSelector(state => state.contacts);
-  const storeFilter = useSelector(state => state.filter);
-
-  // const [contacts, setContacts] = useState(
-  //   JSON.parse(localStorage.getItem('myContacts')) ?? contactdata
-  // );
-
-  // useEffect(() => {
-
-  //   console.log(`contacts has been saved to local storage`);
-  //   console.log(isFirsRender.current);
-  //   localStorage.setItem('myContacts', JSON.stringify(contacts));
-  // }, [contacts]);
+  const storeContact = useSelector(state => state.reducer.contacts);
+  const storeFilter = useSelector(state => state.reducer.filter);
 
   const notify = toShown => {
     if (toShown === 'addContact') {
