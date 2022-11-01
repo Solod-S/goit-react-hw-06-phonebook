@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import shortid from 'shortid';
 import { Formik } from 'formik';
 import schema from './schema';
+import { notify } from 'components/Notify/notify';
 import { ToastContainer, Flip } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
@@ -14,10 +14,28 @@ import {
   ButtonForContactsForm,
   ErrorForContactsForm,
 } from './ContactForm.styled';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'redux/contactSlice';
 
-function ContactForm({ creatingContact }) {
+function ContactForm() {
   const [name] = useState('');
   const [number] = useState('');
+
+  const storeContact = useSelector(state => state.reducer.contacts);
+  const dipatch = useDispatch();
+
+  const creatingContact = data => {
+    const namesInContacts = storeContact.map(contact => contact.name);
+    if (namesInContacts.includes(data.name)) {
+      alert(` ${data.name} is already in contacts`);
+      // если имя из входящих данных === имени в любом имеющемся контакте выдаем ошибку
+    } else {
+      notify('addContact');
+
+      return dipatch(addContact(data));
+    }
+  };
+
   const handleSubmit = (values, actions) => {
     creatingContact(values);
 
@@ -80,8 +98,4 @@ function ContactForm({ creatingContact }) {
   );
 }
 
-ContactForm.propTypes = {
-  creatingContact: PropTypes.func.isRequired,
-};
 export default ContactForm;
-

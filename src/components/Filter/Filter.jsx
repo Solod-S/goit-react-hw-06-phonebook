@@ -1,13 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import shortid from 'shortid';
 import {
   ContactFilter,
   InputForContactFilter,
   LabelForContactFilter,
 } from './Filter.styled';
+import { useDispatch, useSelector } from 'react-redux';
+import { filter } from 'redux/filterSlice';
 
-const Filter = ({ value, onChange }) => {
+const Filter = () => {
+  const dipatch = useDispatch();
+  const storeFilter = useSelector(state => state.reducer.filter);
+  const onChangeFilter = event => {
+    dipatch(filter(event.currentTarget.value));
+  };
   const filterInputId = shortid.generate();
   return (
     <ContactFilter>
@@ -17,15 +23,10 @@ const Filter = ({ value, onChange }) => {
       <InputForContactFilter
         id={filterInputId}
         type="text"
-        value={value}
-        onChange={onChange}
+        value={storeFilter}
+        onChange={onChangeFilter}
       />
     </ContactFilter>
   );
 };
 export default Filter;
-
-Filter.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  value: PropTypes.string.isRequired,
-};

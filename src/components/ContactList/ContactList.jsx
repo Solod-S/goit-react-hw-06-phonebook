@@ -1,19 +1,27 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import 'react-toastify/dist/ReactToastify.css';
 import ContactItem from './ContactItem';
-
+import { useSelector } from 'react-redux';
 import { ContactsList, ListForContactsList } from './ContactList.styled';
-const ContactList = ({ contacts, onDeleteContact }) => {
+
+const ContactList = () => {
+  const storeContact = useSelector(state => state.reducer.contacts);
+  const storeFilter = useSelector(state => state.reducer.filter);
+
+  const getContacts = () => {
+    const normalizedFilter = storeFilter.toLocaleLowerCase();
+    const filtered = storeContact.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter)
+    );
+
+    return filtered;
+  };
+
   return (
     <ContactsList>
       <ListForContactsList>
-        {contacts.map(({ id, name, number }) => (
-          <ContactItem
-            key={id}
-            name={name}
-            number={number}
-            onDeleteContact={() => onDeleteContact(id)}
-          />
+        {getContacts().map(({ id, name, number }) => (
+          <ContactItem key={id} name={name} number={number} id={id} />
         ))}
       </ListForContactsList>
     </ContactsList>
@@ -21,14 +29,3 @@ const ContactList = ({ contacts, onDeleteContact }) => {
 };
 
 export default ContactList;
-
-ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  onDeleteContact: PropTypes.func.isRequired,
-};
